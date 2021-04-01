@@ -18,13 +18,6 @@ resource "google_compute_router" "main" {
   network = google_compute_network.main.name
 }
 
-# Allow static IP address for the GitLab-manager VM
-resource "google_compute_address" "static" {
-  name         = "${var.gcp_gitlab_resource_prefix}-manager-vm"
-  address_type = "EXTERNAL"
-  network_tier = "PREMIUM"
-}
-
 resource "google_compute_address" "main" {
   provider     = google-beta
   name         = "${google_compute_router.main.name}-ip-0"
