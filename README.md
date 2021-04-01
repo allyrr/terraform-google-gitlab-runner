@@ -94,3 +94,10 @@ output "gitlab-manager" {
 | Name | Description |
 |------|-------------|
 | <a name="output_gitlab-manager"></a> [gitlab-manager](#output\_gitlab-manager) | String to SSH into a GitLab manager VM |
+
+## Sponsors
+
+This work has been sponsored by [Scotts Miracle Gro](https://scottsmiraclegro.com/) and [LITSLINK](https://litslink.com/).
+
+[![Scotts Miracle Gro](https://scottsmiraclegro.com/wp-content/themes/smg-2019/images/logos/SMG_Logo-Lg.png)](http://digitalasset.com)
+[![LITSLINK](https://litslink.com/images/LitsLink_logo.jpg)](https://litslink.com/)
