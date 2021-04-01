@@ -1,3 +1,6 @@
+# Retrieve default service account for this project
+data "google_compute_default_service_account" "default" {
+}
 # Generate a random numbers that is intended to be used as unique identifiers for other resources
 resource "random_id" "instance_id" {
   byte_length = 4
@@ -23,6 +26,10 @@ resource "google_compute_instance" "gitlab_manager" {
   metadata = {
     # enable Block Project-wide SSH keys:
     block-project-ssh-keys = "true"
+  }
+  service_account {
+    email = data.google_compute_default_service_account.default.email
+    scopes = ["compute-rw"]
   }
   metadata_startup_script = join("\n", [data.template_file.stage1_config.rendered, local.stage2_config, data.template_file.stage3_config.rendered])
 }
