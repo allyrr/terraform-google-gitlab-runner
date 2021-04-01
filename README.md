@@ -4,16 +4,19 @@ The purpose of this module is to create "GitLab Manager" VM, configure it and re
 
 <img src=".gitlab-manager-diagram.png">
 
-Pre-configured runners will have the abilities to:
-- work with a private GCR registry. You may use such code in your `.gitlab-ci.yml`:
+## Features
+- Use preemptible or regular on-demand VMs
+- There is ability to configure from **1** to **N** amounts of runners inside `gitlab_register_runner` variable each with its own attributes
+- Supports docker images for CI/CD jobs stored in private GCR rregistry. Such code in `.gitlab-ci.yml` is available:
 ```
 test:
   stage: mystage
   image: us.gcr.io/<project_id>/<path_to_gcr>/<image_name>:<number>
   script:
+  ...
 ```
-- read/write job's caches to pre-configured GCS bucket 
-- you can create any number of runners each with its own attributes (sample below)
+- Forked version of [docker+machine](https://docs.gitlab.com/runner/executors/docker_machine.html#forked-version-of-docker-machine) executor
+- [Distributed runners caching](https://docs.gitlab.com/runner/configuration/autoscale.html#distributed-runners-caching) is enabled from the box
 
 ## Requirements
 Runners can be configured as shared|group|specific. Based on the above the appropriate registration token should be taken. For more info please refer [here](https://docs.gitlab.com/ee/ci/runners/README.html)
@@ -63,8 +66,6 @@ output "gitlab-manager" {
 }
 
 ```
-You can configure from **1** to **N** amounts of runners inside `gitlab_register_runner` variable each with its own attributes!
-
 ## Providers
 
 | Name | Version |
