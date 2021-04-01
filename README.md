@@ -85,6 +85,7 @@ output "gitlab-manager" {
 | [google_storage_bucket_iam_binding.gitlab_runner](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_binding) | resource |
 | [random_id.bucket_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 | [random_id.instance_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
+| [google_compute_default_service_account.default](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_default_service_account) | data source |
 | [template_file.stage1_config](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
 | [template_file.stage2_config](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
 | [template_file.stage3_config](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
@@ -107,7 +108,7 @@ output "gitlab-manager" {
 
 | Name | Description |
 |------|-------------|
-| <a name="output_gitlab-manager"></a> [gitlab-manager](#output\_gitlab-manager) | String to SSH into a GitLab manager VM |
+| <a name="output_gitlab-manager"></a> [gitlab-manager](#output\_gitlab-manager) | String to SSH into a GitLab manager VM via IAP |
 
 ## Sponsors
 
