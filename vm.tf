@@ -1,7 +1,6 @@
 # Retrieve default service account for this project
 data "google_compute_default_service_account" "default" {
 }
-
 # Generate a random numbers that is intended to be used as unique identifiers for other resources
 resource "random_id" "instance_id" {
   byte_length = 4
@@ -10,7 +9,6 @@ resource "random_id" "instance_id" {
 # Create GitLab-manager VM:
 resource "google_compute_instance" "gitlab_manager" {
   name = "${var.gcp_gitlab_resource_prefix}-manager-vm-${random_id.instance_id.hex}"
-  # Below is the way of definding the VM with custom resources
   machine_type = "custom-1-1024"
   zone = var.gcp_zone
   hostname = "${var.gcp_gitlab_resource_prefix}.manager-vm"
@@ -24,17 +22,14 @@ resource "google_compute_instance" "gitlab_manager" {
   network_interface {
     network = google_compute_network.main.name
     subnetwork = google_compute_subnetwork.main_subnet_0.name
-  access_config {
-    nat_ip = google_compute_address.static.address
-   }
-  }
-  service_account {
-    email = data.google_compute_default_service_account.default.email
-    scopes = ["compute-rw"]
   }
   metadata = {
     # enable Block Project-wide SSH keys:
     block-project-ssh-keys = "true"
+  }
+  service_account {
+    email = data.google_compute_default_service_account.default.email
+    scopes = ["compute-rw"]
   }
   metadata_startup_script = join("\n", [data.template_file.stage1_config.rendered, local.stage2_config, data.template_file.stage3_config.rendered])
 }
@@ -72,7 +67,7 @@ EOF
 }
 
 ### STAGE_2 configuring: ###
-# This locals allow us to covert "var.gitlab_register_runner" into flattened sequence and iterate through it via for_each
+# This locals allow us to convert "var.gitlab_register_runner" into flattened sequence and iterate through it via for_each
 locals {
   register_runner_flatten = flatten([
     for key, value in var.gitlab_register_runner : [

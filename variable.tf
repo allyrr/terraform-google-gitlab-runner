@@ -38,5 +38,4 @@ variable "gcp_region" {
 variable "gitlab_register_runner" {
   type        = any
   description = "Map of different GitLab runners and their attributes. For more info refer 1) Google Machine drivers - https://docs.docker.com/machine/drivers/gce/ and 2) GitLab One-line registration command https://docs.gitlab.com/runner/register/#one-line-registration-command"
-  default = {}
 }

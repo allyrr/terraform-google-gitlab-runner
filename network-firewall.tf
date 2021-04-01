@@ -1,28 +1,15 @@
 
-resource "google_compute_firewall" "allow-internal-workers-ssh" {
+resource "google_compute_firewall" "allow-ssh" {
   name = "${google_compute_network.main.name}-allow-internal-workers-ssh"
   network = google_compute_network.main.name
   allow {
     protocol = "tcp"
     ports    = ["22"]
   }
-  source_ranges = [google_compute_subnetwork.main_subnet_0.ip_cidr_range]
+  source_ranges = [google_compute_subnetwork.main_subnet_0.ip_cidr_range, "35.235.240.0/20"]
   target_tags = [var.gcp_gitlab_resource_prefix]
-  description = "Allow ssh access inside VPC for all spinned up workers. Managed by terrafrom"
+  description = "Allow ssh access inside VPC for all spinned up workers and + IAP for TCP forwarding. Managed by terrafrom"
 }
-
-resource "google_compute_firewall" "allow-manager-ssh" {
-  name = "${google_compute_network.main.name}-allow-manager-ssh"
-  network = google_compute_network.main.name
-  allow {
-    protocol = "tcp"
-    ports    = ["22"]
-  }
-  source_ranges = ["0.0.0.0/0"]
-  target_tags = [var.gcp_gitlab_resource_prefix]
-  description = "Allow ssh access from world to GitLab manager. Managed by terrafrom"
-}
-
 
 resource "google_compute_firewall" "allow-all-internal" {
   name = "docker-machines"
