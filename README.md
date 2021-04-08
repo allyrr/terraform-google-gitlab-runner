@@ -62,7 +62,7 @@ module "gitlab-runner" {
   }
 }
 output "gitlab-manager" {
-  value = module.gcp_gitlab_runner.gitlab-manager
+  value = module.gitlab-runner.gitlab-manager
 }
 
 ```
