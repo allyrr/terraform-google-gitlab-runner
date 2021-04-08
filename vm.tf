@@ -47,7 +47,7 @@ locals {
 data "template_file" "stage1_config" {
   template = <<EOF
 #!/bin/bash
-sleep 20
+sleep 5
 mkdir /etc/gitlab-runner/
 cat >/etc/gitlab-runner/${var.gcp_gitlab_resource_prefix}-cache.json <<EOT1
 ${base64decode(google_service_account_key.sa_gitlab.private_key)}
@@ -58,11 +58,11 @@ check_interval = 0
 [session_server]
 session_timeout = 3600
 EOT2
-curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | bash
+sudo curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | bash
 sudo apt-get install gitlab-runner
-curl -O https://gitlab-docker-machine-downloads.s3.amazonaws.com/${var.gitlab_docker_machine_release}/docker-machine-Linux-x86_64
-cp docker-machine-Linux-x86_64 /usr/local/bin/docker-machine
-chmod +x /usr/local/bin/docker-machine
+sudo curl -O https://gitlab-docker-machine-downloads.s3.amazonaws.com/${var.gitlab_docker_machine_release}/docker-machine-Linux-x86_64
+sudo cp docker-machine-Linux-x86_64 /usr/local/bin/docker-machine
+sudo chmod +x /usr/local/bin/docker-machine
 EOF
 }
 
@@ -117,7 +117,7 @@ data "template_file" "stage2_config" {
   }  
   template = <<EOF
   # Register runner:
-  gitlab-runner register \
+  sudo gitlab-runner register \
   --non-interactive \
   --limit ${each.value.runner_limit} \
   --request-concurrency ${each.value.runner_request_concurrency} \
@@ -165,13 +165,12 @@ locals {
 }
 data "template_file" "stage3_config" {
   template = <<EOF
-  gitlab-runner start
+  sudo gitlab-runner start
   # Next command force the creation of a new self-signed CA for docker-machine and require because of I got next error:
   ### Error creating machine: Error checking the host: Error checking and/or regenerating the certs: 
   ### There was an error validating certificates for host "x.x.x.x:2376": remote error: tls: bad certificate
-  rm -rf /root/.docker/machine/certs/*
-  gitlab-runner restart
-  gitlab-runner verify
+  sudo rm -rf /root/.docker/machine/certs/*
+  sudo gitlab-runner restart
+  sudo gitlab-runner verify
   EOF
 }
-
